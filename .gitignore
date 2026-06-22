@@ -1,0 +1,5 @@
+exercises/
+assets/
+_progress.json
+.DS_Store
+*.py

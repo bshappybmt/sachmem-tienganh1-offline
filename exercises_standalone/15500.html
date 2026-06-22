@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fun time 4 - Fun time 4 - 1 Trace and colour. Then say.</title>
+<base href="../">
+<link rel="stylesheet" href="css/application.css">
+<link rel="stylesheet" href="css/library.css">
+<link rel="stylesheet" href="css/homepage.css">
+<link rel="stylesheet" href="css/font-awesome.min.css">
+<style>
+  body { margin: 0; overflow-x: hidden; background: #f0f4ff; }
+  .exercise-container { padding: 20px; max-width: 1200px; margin: 0 auto; }
+</style>
+</head>
+<body>
+<div class="exercise-container" data-eid="15500">
+
+  <div class="image-container text-center" style="margin: 0px auto; height: 100%; width: 100%; font-size: 39.1248px; padding-top: 0px; padding-bottom: 0px; line-height: 55.8925px;">
+    <iframe class="game-iframe" src="https://www.sachmem.vn/v3/embeds/page/5f30b7f2741cd07d5f66e38b" style="font-size: 39.1248px; margin-top: 0px; margin-bottom: 0px; padding-top: 0px; padding-bottom: 0px; line-height: 55.8925px;"></iframe>
+  </div>
+
+</div>
+<script>
+// Basic interaction for offline exercises
+(function() {
+  const container = document.querySelector('.exercise-container');
+  const eid = container.dataset.eid;
+  
+  // Handle audio play - find all clickable elements
+  document.addEventListener('click', function(e) {
+    const img = e.target.closest('img');
+    if (img) {
+      // For point-and-say: clicking image plays corresponding audio
+      console.log('Clicked image:', img.src);
+    }
+  });
+  
+  // For checkbox-style exercises (listen.tick)
+  document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener('change', function() {
+      this.classList.toggle('checked');
+    });
+  });
+})();
+</script>
+</body>
+</html>

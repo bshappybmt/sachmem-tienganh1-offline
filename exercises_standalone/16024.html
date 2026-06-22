@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 4 In the bedroom - Lesson 1 - Fun corner.</title>
+<base href="../">
+<link rel="stylesheet" href="css/application.css">
+<link rel="stylesheet" href="css/library.css">
+<link rel="stylesheet" href="css/homepage.css">
+<link rel="stylesheet" href="css/font-awesome.min.css">
+<style>
+  body { margin: 0; overflow-x: hidden; background: #f0f4ff; }
+  .exercise-container { padding: 20px; max-width: 1200px; margin: 0 auto; }
+</style>
+</head>
+<body>
+<div class="exercise-container" data-eid="16024">
+
+  <div id="hide_game" class="box-container box-middle box-center display-none" style="font-size: 39.1248px; margin-top: 0px; margin-bottom: 0px; padding-top: 0px; padding-bottom: 0px; line-height: 48.906px;"><i class="fa fa-times" aria-hidden="true" style="font-size: 39.1248px; margin-top: 0px; margin-bottom: 0px; padding-top: 0px; padding-bottom: 0px; line-height: 39.1248px;"></i></div>
+  <div class="image-container text-center box-container box-middle box-center" style="margin: 0px auto; height: 100%; width: 100%; background: url(&quot;https://cdn2.hoclieuthongminh.com/public//images-game/BG-U4c43b2.jpg&quot;) center center / auto 100% no-repeat; font-size: 39.1248px; padding-top: 0px; padding-bottom: 0px; line-height: 55.8925px;">
+    <div id="show_game" style="height: 870.476px !important; width: 1430px; font-size: 39.1248px; margin-top: 0px; margin-bottom: 0px; padding-top: 0px; padding-bottom: 0px; line-height: 55.8925px;">
+      <div class="title-embed box-container box-center box-bottom" style="height: 522.286px !important; font-size: 39.1248px; margin-top: 0px; margin-bottom: 0px; padding-top: 0px; padding-bottom: 0px; line-height: 55.8925px;">
+        <!-- ngIf: input.img_title --><img src="images/name-15dcac9d.png" style="height: 386.1px; font-size: 22.88px; margin-top: 0px; margin-bottom: 0px; padding-top: 0px; padding-bottom: 0px; line-height: 32.6857px;"><!-- end ngIf: input.img_title -->
+      </div>
+      <div class="play-button box-container box-center box-middle" style="height: 348.191px !important; font-size: 39.1248px; margin-top: 0px; margin-bottom: 0px; padding-top: 0px; padding-bottom: 0px; line-height: 55.8925px;">
+        <!-- ngIf: input.img_play --><img id="btn-play" src="https://cdn2.hoclieuthongminh.com/public//images-game/play2a68.png" style="height: 100.1px; font-size: 22.88px; margin-top: 0px; margin-bottom: 0px; padding-top: 0px; padding-bottom: 0px; line-height: 32.6857px;"><!-- end ngIf: input.img_play -->
+      </div>
+    </div>
+    <iframe class="game-iframe display-none" style="font-size: 39.1248px; margin-top: 0px; margin-bottom: 0px; padding-top: 0px; padding-bottom: 0px; line-height: 55.8925px;"></iframe>
+  </div>
+
+</div>
+<script>
+// Basic interaction for offline exercises
+(function() {
+  const container = document.querySelector('.exercise-container');
+  const eid = container.dataset.eid;
+  
+  // Handle audio play - find all clickable elements
+  document.addEventListener('click', function(e) {
+    const img = e.target.closest('img');
+    if (img) {
+      // For point-and-say: clicking image plays corresponding audio
+      console.log('Clicked image:', img.src);
+    }
+  });
+  
+  // For checkbox-style exercises (listen.tick)
+  document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener('change', function() {
+      this.classList.toggle('checked');
+    });
+  });
+})();
+</script>
+</body>
+</html>
