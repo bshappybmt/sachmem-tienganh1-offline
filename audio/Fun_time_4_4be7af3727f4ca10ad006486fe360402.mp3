@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Sách Mềm</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta property="og:title" content="Sách Mềm - Công cụ hỗ trợ giảng dạy, học tập theo chương trình và sách giáo khoa phổ thông." />
+    <meta property="og:url" content="https://www.sachmem.vn/users/sign_in" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Sách Mềm - Dạy hay - Học tốt" />
+    <meta property="og:description" content="Sách Mềm - phần mềm bổ trợ sách giáo khoa - Hỗ trợ giáo viên giảng bài theo sách tương tác sinh động. - Hỗ trợ học sinh ôn luyện, làm bài tập dễ dàng, thuận tiện" />
+    <meta property="og:image" content="https://cdn2.hoclieuthongminh.com/public/temp-sm-questions/image/logo_small.png" />
+    <meta property="fb:app_id" content="974889472547644" />
+    <!-- <link rel="stylesheet" media="all" href="https://cdn2.hoclieuthongminh.com/libs/font-awesome/4.6.3/css/font-awesome.min.css" /> -->
+    <link rel="stylesheet" media="all" href="https://trungtamsach.vn/libs/font-awesome/4.6.3/css/font-awesome.min.css" />
+    <link rel="manifest" href="/manifest.json" />
+    <script type="text/javascript">
+      // const api_story = 'http://localhost:8050/';
+      // const story_url = 'http://localhost:4201/';
+      const api_story = 'https://truyen-api.sachmem.vn/';
+      const story_url = 'https://truyen.sachmem.vn/';
+      const DOMAIN_LIST = ['https://cdn2.hoclieuthongminh.com/public/'];
+      DOMAIN = DOMAIN_LIST[Math.floor(Math.random() * DOMAIN_LIST.length)];
+    </script>
+
+    <link  href="https://trungtamsach.vn/public/sachmem281/assets/library.css" rel="stylesheet" media="all" />
+    <script src="https://trungtamsach.vn/public/sachmem281/assets/library.js"></script>
+
+    <link  href="https://trungtamsach.vn/public/sachmem281/assets/application.css" rel="stylesheet" media="all" />
+    <script src="https://trungtamsach.vn/public/sachmem281/assets/application.js"></script>
+
+    <link  href="https://trungtamsach.vn/public/sachmem281/assets/homepage.css" rel="stylesheet" media="all" />
+<!--
+    <link  href="https://cdn2.hoclieuthongminh.com/public/sachmem281/assets/library.css" rel="stylesheet" media="all" />
+    <script src="https://cdn2.hoclieuthongminh.com/public/sachmem281/assets/library.js"></script>
+
+    <link  href="https://cdn2.hoclieuthongminh.com/public/sachmem281/assets/application.css" rel="stylesheet" media="all" />
+    <script src="https://cdn2.hoclieuthongminh.com/public/sachmem281/assets/application.js"></script>
+
+    <link  href="https://cdn2.hoclieuthongminh.com/public/sachmem281/assets/homepage.css" rel="stylesheet" media="all" /> -->
+
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '335076985436860');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=335076985436860&ev=PageView&noscript=1"
+    /></noscript>
+
+    <script src="https://trungtamsach.vn/libs/js/pixi-legacy-7.2.4.min.js"></script>
+    <script src="https://trungtamsach.vn/libs/js/pixi-spine-4.0.4.js"></script>
+<!--
+    <script src="https://cdn2.hoclieuthongminh.com/libs/js/pixi-legacy-7.2.4.min.js"></script>
+    <script src="https://cdn2.hoclieuthongminh.com/libs/js/pixi-spine-4.0.4.js"></script> -->
+    <script type="text/javascript">
+      function run_sw(sw_name) {
+        if ('serviceWorker' in navigator && navigator.serviceWorker.controller == null && navigator.sayswho != undefined && parseInt(navigator.sayswho.split(" ")[1]) >= 58 && !isFirefox) {
+          navigator.serviceWorker.register(sw_name)
+            .then(function(reg) {
+              console.log('[Service worker] Registered!');
+            });
+        } else if ('serviceWorker' in navigator && navigator.serviceWorker.controller != null && (navigator.serviceWorker.controller.scriptURL != origin_url + sw_name)) {
+          navigator.serviceWorker.getRegistrations().then(function(registrations) {
+            for (var i = 0; i < registrations.length; i++) {
+              registrations[i].unregister();
+            }
+            caches.delete('cache-sachmem-v1');
+            navigator.serviceWorker.register(sw_name)
+              .then(function(reg) {
+                console.log('[Service worker] Registered!');
+              });
+          })
+        }
+      }
+      var checkBrowser_homepage = !isFirefox && window.Cache != undefined && navigator.sayswho != undefined && parseInt(navigator.sayswho.split(" ")[1]) >= 58;
+      var checkBrowser = navigator != undefined && navigator.serviceWorker != undefined && navigator.serviceWorker.controller != null && checkBrowser_homepage;
+      function sendResult() {}
+      function addDomain(input) {
+        if (typeof(input) === "object") {
+          for (var i in input) {
+            if (typeof(input[i]) === "object") {
+              addDomain(input[i]);
+            } else {
+              var tempInput = input[i].toString().trim();
+              if (tempInput.match(/(\.mp3$)|(\.jpe{0,1}g$)|(\.png$)|(\.webp$)|(\.bin$)|(\.json$)|(\.atlas$)/i) && !tempInput.match(/^(https{0,1}|sachmem):\/\//)) {
+                if (input[i][0] === "/") {
+                  input[i] = DOMAIN + input[i];
+                } else {
+                  input[i] = DOMAIN + "/" + input[i];
+                }
+              }
+            }
+          }
+        }
+      }
+      function addDomain2(input) {
+        if (typeof(input) === "object") {
+          for (var i in input) {
+            if (typeof(input[i]) === "object") {
+              addDomain(input[i]);
+            } else {
+              if (input[i].toString().trim().match(/(\.mp3$)|(\.jpg$)|(\.png$)|(\.webp$)/i) && !input[i].toString().trim().match(/^(https?|sachmem):\/\//)) {
+                if (input[i][0] === "/") {
+                  input[i] = DOMAIN + input[i];
+                } else {
+                  input[i] = DOMAIN + "/" + input[i];
+                }
+              }
+            }
+          }
+        }
+      }
+      function preloadData(input) {
+        if (typeof(input) === "object") {
+          for (var i in input) {
+            preloadData(input[i]);
+          }
+        } else if(input) {
+          var tmpInput = input.toString().trim();
+          if(!tmpInput.match(/^(https?|sachmem):\/\//)) {
+            tmpInput = DOMAIN + tmpInput;
+            if (tmpInput[0] === "/") {
+              tmpInput = DOMAIN + tmpInput;
+            } else {
+              input[i] = DOMAIN + "/" + input[i];
+            }
+          }
+          if (tmpInput.match(/(\.jpg$)|(\.png$)/i)) {
+            var img = new Image();
+            img.src = tmpInput;
+          }
+          if (tmpInput.match(/(\.mp3$)/i)) {
+            var audio = new Audio();
+            audio.src = tmpInput;
+          }
+        }
+      }
+
+    </script>
+
+    <meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="aCxRuJHJbaiaG8KUJ4FkkKrJVZNDMBnFJ/DtNWJqXk75QMshpqOEpWa0/8k+CaEk0U17fC+nuSVHz21e/9dIHw==" />
+  </head>
+
+  <body>
+    <style type="text/css">
+      .display-none {
+        display: none;
+      }
+    </style>
+    <script type="text/javascript">
+      $("body").addClass("display-none");
+      $(document).ready(function() {
+        $("body").removeClass("display-none");
+        if (window.location.href.indexOf("ms_exercises") < 0) {
+          NProgress.start();
+          NProgress.set(0.4);
+        }
+        run_sw("/serviceworker-281.js");
+        z_dictionary({});
+      });
+      var _mouse = new UtilityMouse();
+      var BOOK_JSON_VERSION = '20';
+      var is_diamond_teacher_check = true
+    </script>
+
+        <!-- <link rel="stylesheet" href="https://cdn2.hoclieuthongminh.com/tienganh/site/views/assets/css/css-main/style.css">
+<link rel="stylesheet" href="https://cdn2.hoclieuthongminh.com/tienganh/site/views/assets/css/css-main/custom.css">
+<link rel="stylesheet" href="https://cdn2.hoclieuthongminh.com/tienganh/site/views/assets/css/css-main/reponsive/home.css"> -->
+<div class="tienganhsachmem">
+  <nav class="navbar navbar-default">
+    <div class="container navbar-container">
+      <a class="navbar-brand logo-lap" href="/">
+        <!-- <img src="https://cdn2.hoclieuthongminh.com/public/images/common/logo-small2.png" class="logo-header" alt="logo"> -->
+        <img src="https://cdn2.hoclieuthongminh.com/tienganh/site/views/assets/images/gd-logo.png" class="logo-header" alt="logo">
+        <!-- <h3 class="text-uppercase logo-text">CÔNG TY CỔ PHẦN ĐẦU TƯ <br> VÀ PHÁT TRIỂN GIÁO DỤC HÀ NỘI</h3> -->
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="true" aria-label="Toggle navigation">
+        <span class="oi oi-menu"><i class="fa fa-bars" aria-hidden="true"></i></span>
+      </button>
+      <a class="navbar-brand logo-mobile w-80" href="/">
+        <!-- <img src="https://cdn2.hoclieuthongminh.com/public/images/common/logo-small2.png" class="logo-header" alt="logo"> -->
+        <img src="https://cdn2.hoclieuthongminh.com/tienganh/site/views/assets/images/gd-logo.png" class="logo-header" alt="logo">
+      </a>
+      <div class="navbar-brand m-0 p-0 search-on-nav search-box-will-show w-9">
+        <!-- <div class="icon-search" data-toggle="modal" data-target="#search-modal">
+          <i class="fa fa-search icon-search-i" aria-hidden="true"></i>
+        </div> -->
+      </div>
+      <div class="collapse navbar-collapse" id="ftco-nav">
+          <ul class="nav navbar-nav">
+  <!-- <li><a class="click-one" href="/">Trang Chủ</a></li> -->
+  <li class="dropdown">
+    <a href="" class="text-header" data-toggle="dropdown" role="button"
+       aria-haspopup="true" aria-expanded="false">
+      Giới Thiệu
+    </a>
+    <ul class="dropdown-menu">
+      <li><a href="/gioi-thieu/bo-sgk-tieng-anh-global-success">BỘ SGK TIẾNG ANH GLOBAL SUCCESS</a></li>
+      <li><a target="_blank" href="https://phuongnam.edu.vn/friend2">FAMILY AND FRIENDS NATIONAL EDITION</a></li>
+      <li><a target="_blank" href="https://tienganh3s.vn/">BỘ TIẾNG ANH TĂNG CƯỜNG 3S</a></li>
+    </ul>
+  </li>
+  <li class="dropdown">
+    <a href="" class="text-header" data-toggle="dropdown" role="button"
+       aria-haspopup="true" aria-expanded="false">
+      Sản phẩm
+    </a>
+    <ul class="dropdown-menu">
+      <li><a href="/sach/mam-non">Mầm non</a></li>
+      <li><a href="/sach/tieu-hoc">Tiểu học</a></li>
+      <li><a href="/sach/thcs">Trung học cơ sở</a></li>
+      <li><a href="/sach/thpt">Trung học phổ thông</a></li>
+      <li><a href="/trial">Sách Mềm học sinh</a></li>
+      <li><a href="/trial?type=teacher">Sách Mềm giáo viên</a></li>
+    </ul>
+  </li>
+  <li><a class="click-one" href="https://www.sachmem.vn/trial">Học Sinh</a></li>
+  <li><a class="click-one" href="https://www.sachmem.vn/trial?type=teacher">Giáo Viên</a></li>
+  <li><a class="click-one" href="/bai-viet/phu-huynh-4/page-1">Phụ Huynh</a></li>
+  <li><a class="click-one" href="/bai-viet">Tin Tức</a></li>
+
+  <li class="dropdown">
+    <a href="" class="text-header" data-toggle="dropdown" role="button"
+       aria-haspopup="true" aria-expanded="false">
+      Hỗ trợ
+    </a>
+    <ul class="dropdown-menu">
+      <li><a target="_blank" href="https://gioithieu.sachmem.vn/lien-he/">Liên hệ</a></li>
+      <li><a target="_blank" href="https://gioithieu.sachmem.vn/huongdan/">Hướng dẫn chung</a></li>
+      <li><a target="_blank" href="https://gioithieu.sachmem.vn/cau-hoi-thuong-gap/">Câu hỏi thường gặp</a></li>
+    </ul>
+  </li>
+</ul>
+
+          <ul class="nav navbar-nav navbar-right">
+  <li>
+    <a href="https://accounts.sachmem.vn/users/sign_up">Đăng ký</a>
+  </li>
+  <li>
+    <a href="/home">Đăng nhập</a>
+  </li>
+  <!-- <li>
+    <a href="https://www.sachmem.vn/pd_keys/new">Thêm sách mềm</a>
+  </li> -->
+  <li class="nav-item">
+      <a class="btn btn-add-sachmem" id="addSachMem" href="https://www.sachmem.vn/trial?type=teacher">
+        <div>
+          Sử dụng Sách Mềm
+        </div>
+      </a>
+  </li>
+</ul>
+<script type="text/javascript">
+  if (window.location.pathname == "/trial") {
+    $("#addSachMem").parent().remove();
+  }
+</script>
+
+      </div>
+      <div class="navbar-brand m-0 p-0 search-on-nav search-box-will-hide">
+        <!-- <div class="icon-search" data-toggle="modal" data-target="#search-modal">
+          <i class="fa fa-search icon-search-i" aria-hidden="true"></i>
+        </div> -->
+      </div>
+    </div>
+  </nav>
+</div>
+
+<!-- <script src="https://tienganh2.sachmem.vn/site/views/assets/js/js-main/scrollax.min.js"></script> -->
+<!-- <script src="https://tienganh2.sachmem.vn/site/views/assets/js/js-main/main.js"></script> -->
+<!-- <script src="https://tienganh2.sachmem.vn/site/views/assets/js/js-main/lazysizes.js"></script> -->
+
+<script type="text/javascript">
+  $("#logout").click(function() {
+    localStorage.removeItem('sm:comment');
+  });
+  if (window.location.pathname == "/") {
+    $(".nav.navbar-nav li").removeClass("selected");
+  }
+  // } else if (window.location.pathname == "/home") {
+  //   $($(".nav.navbar-nav li")[1]).addClass("selected");
+  $(".dropdown").click(function() {
+    var that = this;
+    setTimeout(function() {
+      $(that).removeClass("open");
+      if ($(that).find("a.text-header").attr("href") != "" && $(that).find("a.text-header").attr("href") != "/") {
+        window.location = $(that).find("a.text-header").attr("href");
+      }
+    })
+  })
+  if (window.location.pathname == "/") {
+  }
+  else {
+    $(".heid-logo").remove();
+    $(".navbar-brand img").each(function() {
+      $(this).attr("src", "https://cdn2.hoclieuthongminh.com/public/images/common/logo-small2.png");
+    })
+    $(".navbar-brand").addClass("navbar-brand-logo-sachmem");
+    $(".navbar-container").addClass("navbar-container-in-home")
+  }
+  $(".navbar-toggler").click(function() {
+    if ($(".collapse.navbar-collapse").hasClass("show")) {
+      $(".collapse.navbar-collapse").removeClass("show");
+    } else {
+      $(".collapse.navbar-collapse").addClass("show");
+    }
+  })
+</script>
+
+
+      <div class="box-container box-space-around body-wrapper">
+          <div class="box-xs-97 box-sm-87 box-md-80">
+            <style type="text/css">
+  .bound {
+    height: 100%;
+    width: 100%;
+    text-align: center;
+  }
+  .x404 {
+    font-size: 5em;
+  }
+  .content {
+    font-size: 2em;
+  }
+  .back-home-page {
+    text-decoration: none;
+    font-size: 24px;
+  }
+</style>
+
+<div class="bound">
+  <div class="x404">404</div>
+  <div class="content">Trang bạn vừa truy cập hiện không tồn tại!</div>
+  <div class="back-home-page">
+    Quay về <a href="/">trang chủ</a> sau <span id="timer">10</span> giây
+  </div>
+</div>
+<script type="text/javascript">
+  var timer = 10;
+  var interval = setInterval(function() {
+    timer--;
+    $("#timer").text(timer)
+    if(timer == 0) {
+      location.href = "/";
+      clearInterval(interval);
+    };
+  }, 1000);
+</script>
+
+          </div>
+
+      </div>
+
+        <footer class="ftco-footer ftco-no-pt">
+  <div class="container footer-contai">
+    <div class="row mb-4">
+      <div class="col-md">
+        <div class="ftco-footer-widget pt-md-5 mb-4">
+          <h2 class="ftco-heading-2">Nhà xuất bản Giáo dục Việt Nam</h2>
+          <p>Công ty Cổ phần Đầu tư và Phát triển Giáo dục Hà Nội</p>
+          <p>Giấy chứng nhận Đăng ký Kinh doanh số 0102222393</p>
+          <p>Ngày cấp: 26/04/2021</p>
+          <p>Nơi cấp: Sở Kế Hoạch Và Đầu Tư TP. Hà Nội</p>
+          <p>Giấy phép thiết lập mạng Xã hội Số 405/GP - BTTTT</p>
+          <p>Do Bộ Thông tin và Truyền thông Cấp ngày 21/08/2017</p>
+          <a target="_blank" href="http://online.gov.vn/HomePage/CustomWebsiteDisplay.aspx?DocId=41373">
+            <img height="70" src="https://cdn2.hoclieuthongminh.com/public/temp/20150827110756-dathongbao.png">
+          </a>
+        </div>
+      </div>
+
+      <div class="col-md">
+        <div class="ftco-footer-widget pt-md-5 mb-4">
+          <h2 class="ftco-heading-2">Liên Hệ</h2>
+          <div class="block-23 mb-3">
+            <ul>
+              <li><span class="icon fa fa-map-marker"></span><span class="text">Tòa nhà VP HEID, ngõ
+                      12 Láng Hạ, Thành Công, Ba Đình, Hà Nội</span></li>
+              <li><span class="icon fa fa-phone"></span><span class="text">Bộ phận kinh doanh: 0243 512
+                      2636</span></li>
+              <li><span class="icon fa fa-phone"></span><span class="text">Hỗ trợ Sách Mềm: 0243 512 2222 - 0888 969 599</span></li>
+              <li><span class="icon fa fa-paper-plane"></span><span class="text">lienhe@sachmem.vn</span></li>
+            </ul>
+            <ul class="ftco-footer-social list-unstyled float-md-left float-lft mb-0">
+              <li class="ftco-animate mb-0 fadeInUp ftco-animated"><a href="https://www.facebook.com/sachmem.vn" class="m-0"><span class="fa fa-facebook"></span></a></li>
+            </ul>
+            <ul class="ftco-footer-social list-unstyled float-md-left float-lft mb-0">
+              <li class="ftco-animate mb-0 fadeInUp ftco-animated"><a href="https://www.youtube.com/channel/UCGzhS0mRNympJQQ0PStn7CQ" class="m-0"><span class="fa fa-youtube-play"></span></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <p>Copyright 2020 Công ty Cổ phần Đầu tư và Phát triển Giáo dục Hà Nội. All Rights Reserved</p>
+        </div>
+    </div>
+  </div>
+</footer>
+
+
+
+      
+ <style type="text/css" media="screen">
+    .button-social {
+      position: fixed;
+      top: 50px;
+      right: 0px;
+      z-index: 9999;
+    }
+    .button-social a {
+      cursor: pointer;
+    }
+    .socialButtons {
+      position: absolute;
+      width: 100%;
+      top: 120%;
+      text-align: center;
+    }
+    .socialButtons a {
+      display: block;
+      margin: 0px auto 10px;
+      line-height: 1.15;
+      position: relative;
+    }
+
+
+  </style>
+  <div class="button-social">
+    <a title="" id="openFAB">
+        <div style="width: 12px;height: 46px;background: #2895F1;border-top-left-radius: 10px;border-bottom-left-radius: 10px;">
+          <i class="fa fa-chevron-left" style="color: #a7fff4; margin-top: 16px;margin-left: 1px;"></i>
+        </div>
+
+    </a>
+    <a title="" id="closeFAB"><i class="fa fa-2x fa-times-circle"></i></a>
+    <div class="socialButtons" id="socialButtons">
+      <a href="https://www.facebook.com/sachmem.vn" title="Facebook" target="_blank">
+        <i class="fa fa-2x fa-facebook-square"></i>
+      </a>
+      <a href="https://m.me/sachmem.vn" title="Messenger" target="_blank">
+        <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M12 0c-6.627 0-12 4.975-12 11.111 0 3.497 1.745 6.616 4.472 8.652v4.237l4.086-2.242c1.09.301 2.246.464 3.442.464 6.627 0 12-4.974 12-11.111 0-6.136-5.373-11.111-12-11.111zm1.193 14.963l-3.056-3.259-5.963 3.259 6.559-6.963 3.13 3.259 5.889-3.259-6.559 6.963z" fill="#2895F1"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('#closeFAB').hide();
+      $('#socialButtons').hide();
+      $('#openFAB').click(function() {
+        $('#openFAB').hide();
+        $('#closeFAB').fadeIn();
+        $('#socialButtons').fadeIn("slow");
+        $('.button-choosebook').hide();
+      });
+      $('#closeFAB').click(function() {
+        $('#closeFAB').hide();
+        $('#socialButtons').hide();
+        $('#openFAB').fadeIn();
+        $('.button-choosebook').show();
+      });
+    });
+  </script>
+
+
+    <script type="text/javascript">
+      $(window).load(function() {NProgress.done();var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'; function random_string(length) { var result = ''; for ( var i = 0; i < length; i++ ) { result += characters.charAt(Math.floor(Math.random() * 77)); } return result; } function gid () { return (new Date().getTime() + random_string(15)); } if ($.cookie("tk33") == undefined) { $.cookie("tk33", gid()) }   var temp_data = { "uid": "u", "e": "e", "tk": $.cookie("tk33"), "u": window.location.href }; $.ajax({ url: "https://lang.sachmem.vn/sachmems", type: "post", data: temp_data, success: function (res) {} });});
+    </script>
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GQ2P6M83SN"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-GQ2P6M83SN');
+
+
+function getCookie(name) {
+  var value = "; " + document.cookie;
+  var parts = value.split("; " + name + "=");
+  if (parts.length == 2) return parts.pop().split(";").shift();
+}
+ function setCookie(name, value) {
+  document.cookie = name + '=' + value + '; path=/';
+}
+
+
+
+</script>
+
+  </body>
+</html>
