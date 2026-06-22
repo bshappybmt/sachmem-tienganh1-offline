@@ -270,9 +270,9 @@ function buildSidebar() {
       (lesson.exercises || []).forEach(ex => {
         const item = document.createElement('div');
         item.className = 'ex-item';
-        item.dataset.index = EXERCISES.indexOf(ex);
+        item.dataset.index = EX_INDEX[ex.id];
         item.innerHTML = `<span class="icon">${getIcon(ex.icon)}</span>${ex.name}`;
-        item.onclick = () => loadExercise(EXERCISES.indexOf(ex));
+        item.onclick = () => loadExercise(EX_INDEX[ex.id]);
         exList.appendChild(item);
       });
       
@@ -395,6 +395,10 @@ function loadExercise(index) {
   // Load exercise HTML into iframe
   const eid = ex.id;
   frame.onload = () => {
+    loading.style.display = 'none';
+    frame.style.display = '';
+  }};
+  frame.onerror = () => {
     loading.style.display = 'none';
     frame.style.display = '';
   };
