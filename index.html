@@ -422,6 +422,10 @@ function goHome() {
   try { localStorage.removeItem('current_exercise'); } catch(e) {}
 }
 
+// Build EX_INDEX
+const EX_INDEX = {};
+EXERCISES.forEach((ex, i) => { EX_INDEX[ex.id] = i; });
+
 // ==================== INIT ====================
 buildSidebar();
 
