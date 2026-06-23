@@ -217,6 +217,7 @@
 <!-- Footer -->
 <div class="footer" id="footer" style="display:none">
   <button id="prevBtn" onclick="navigate(-1)" disabled>◀ Trước</button>
+  <button id="audioBtn" class="audio-btn" onclick="toggleAudio()" disabled title="Không có audio cho bài này">🔊 Play</button>
   <div class="ex-title" id="exTitle">Exercise</div>
   <button id="nextBtn" onclick="navigate(1)">Sau ▶</button>
 </div>
@@ -394,9 +395,15 @@ function loadExercise(index) {
   
   // Load exercise HTML into iframe
   const eid = ex.id;
+  // Reset audio
+  stopAudio();
+  audioExId = null;
+  
   frame.onload = () => {
     loading.style.display = 'none';
     frame.style.display = '';
+    // Wire up audio + image interaction in iframe
+    wireExerciseIframe();
   };
   frame.onerror = () => {
     loading.style.display = 'none';
@@ -408,11 +415,122 @@ function loadExercise(index) {
   try { localStorage.setItem('current_exercise', index); } catch(e) {}
 }
 
+// ==================== AUDIO & EXERCISE INTERACTION ====================
+let audioExId = null;
+
+function wireExerciseIframe() {
+  const frame = document.getElementById('exerciseFrame');
+  const audioBtn = document.getElementById('audioBtn');
+  try {
+    const iframeDoc = frame.contentDocument || frame.contentWindow.document;
+    const audio = iframeDoc.getElementById('audio');
+    
+    if (audio && audio.src && audio.src.length > 0) {
+      audioExId = audio.id || 'audio';
+      audioBtn.disabled = false;
+      audioBtn.title = 'Phát âm thanh';
+      audioBtn.textContent = '🔊 Play';
+      audioBtn.className = 'audio-btn';
+      
+      // Update button when audio ends
+      audio.onended = () => {
+        audioBtn.textContent = '🔊 Play';
+        audioBtn.className = 'audio-btn';
+      };
+    } else {
+      audioBtn.disabled = true;
+      audioBtn.title = 'Không có audio cho bài này';
+    }
+    
+    // Make all clickable images play audio on click
+    iframeDoc.querySelectorAll('img.object, .exercise-container img[data-begin]').forEach(img => {
+      img.style.cursor = 'pointer';
+      img.title = 'Click để nghe';
+      img.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const a = iframeDoc.getElementById('audio');
+        if (a && a.src && a.src.length > 0) {
+          a.currentTime = 0;
+          a.play().then(() => {
+            audioBtn.textContent = '⏹ Dừng';
+            audioBtn.className = 'audio-btn playing';
+          }).catch(() => {});
+        }
+      });
+    });
+    
+    // Wire up fun corner play button
+    const playBtn = iframeDoc.getElementById('btn-play');
+    if (playBtn) {
+      playBtn.style.cursor = 'pointer';
+      playBtn.addEventListener('click', function() {
+        // Try to load game iframe
+        const gameIframe = iframeDoc.querySelector('.game-iframe');
+        if (gameIframe) {
+          gameIframe.style.display = 'block';
+          gameIframe.style.width = '100%';
+          gameIframe.style.height = '600px';
+          // Games require internet — load from original CDN if available
+          gameIframe.src = 'https://cdn2.hoclieuthongminh.com/public/html-game/game.html';
+        }
+      });
+    }
+    
+    // Clean up AngularJS style artifacts
+    iframeDoc.querySelectorAll('[style*="font-size: 39"]').forEach(el => {
+      el.style.fontSize = '';
+      el.style.lineHeight = '';
+    });
+    
+  } catch(e) {
+    console.log('Could not wire iframe:', e);
+    audioBtn.disabled = true;
+  }
+}
+
+function toggleAudio() {
+  const frame = document.getElementById('exerciseFrame');
+  const audioBtn = document.getElementById('audioBtn');
+  try {
+    const iframeDoc = frame.contentDocument || frame.contentWindow.document;
+    const audio = iframeDoc.getElementById('audio');
+    if (!audio || !audio.src) return;
+    
+    if (audio.paused) {
+      audio.play().then(() => {
+        audioBtn.textContent = '⏹ Dừng';
+        audioBtn.className = 'audio-btn playing';
+      }).catch(() => {});
+    } else {
+      audio.pause();
+      audioBtn.textContent = '🔊 Play';
+      audioBtn.className = 'audio-btn';
+    }
+  } catch(e) {}
+}
+
+function stopAudio() {
+  const frame = document.getElementById('exerciseFrame');
+  const audioBtn = document.getElementById('audioBtn');
+  try {
+    const iframeDoc = frame.contentDocument || frame.contentWindow.document;
+    const audio = iframeDoc.getElementById('audio');
+    if (audio) {
+      audio.pause();
+      audio.currentTime = 0;
+    }
+  } catch(e) {}
+  audioBtn.textContent = '🔊 Play';
+  audioBtn.className = 'audio-btn';
+}
+
 function navigate(delta) {
+  stopAudio();
   loadExercise(currentIndex + delta);
 }
 
 function goHome() {
+  stopAudio();
   currentIndex = -1;
   document.getElementById('emptyState').style.display = 'flex';
   document.getElementById('exerciseFrame').style.display = 'none';
