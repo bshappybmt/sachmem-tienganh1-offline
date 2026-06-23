@@ -442,18 +442,32 @@ function wireExerciseIframe() {
       audioBtn.title = 'Không có audio cho bài này';
     }
     
-    // Make all clickable images play audio on click
+    // Make all clickable images play the correct audio segment on click
     iframeDoc.querySelectorAll('img.object, .exercise-container img[data-begin]').forEach(img => {
       img.style.cursor = 'pointer';
-      img.title = 'Click để nghe';
+      img.title = 'Click để nghe từ này';
+      const begin = parseFloat(img.dataset.begin);
+      const end = parseFloat(img.dataset.end);
       img.addEventListener('click', function(e) {
         e.stopPropagation();
         const a = iframeDoc.getElementById('audio');
-        if (a && a.src && a.src.length > 0) {
-          a.currentTime = 0;
+        if (a && a.src && a.src.length > 0 && !isNaN(begin)) {
+          a.currentTime = begin;
           a.play().then(() => {
             audioBtn.textContent = '⏹ Dừng';
             audioBtn.className = 'audio-btn playing';
+            // Auto-stop at end time if available
+            if (!isNaN(end) && end > begin) {
+              const checkEnd = setInterval(() => {
+                if (a.currentTime >= end) {
+                  a.pause();
+                  a.currentTime = begin;
+                  clearInterval(checkEnd);
+                  audioBtn.textContent = '🔊 Play';
+                  audioBtn.className = 'audio-btn';
+                }
+              }, 50);
+            }
           }).catch(() => {});
         }
       });
@@ -463,17 +477,41 @@ function wireExerciseIframe() {
     const playBtn = iframeDoc.getElementById('btn-play');
     if (playBtn) {
       playBtn.style.cursor = 'pointer';
-      playBtn.addEventListener('click', function() {
-        // Try to load game iframe
-        const gameIframe = iframeDoc.querySelector('.game-iframe');
+      playBtn.title = 'Click để chơi game (cần internet)';
+      // Find game title image to guess game type
+      const titleImg = iframeDoc.querySelector('.title-embed img');
+      let gameSrc = titleImg ? titleImg.src.match(/[^/]+$/) : '';
+      // Try known game patterns from sachmem CDN
+      const gameUrls = [
+        'https://cdn2.hoclieuthongminh.com/public/html-game/slap-the-board/index.html',
+        'https://cdn2.hoclieuthongminh.com/public/html-game/bingo/index.html',
+        'https://cdn2.hoclieuthongminh.com/public/html-game/matching/index.html'
+      ];
+      const gameBtn = playBtn;
+      const gameIframe = iframeDoc.querySelector('.game-iframe');
+      const hideBtn = iframeDoc.getElementById('hide_game');
+      
+      gameBtn.addEventListener('click', function() {
         if (gameIframe) {
           gameIframe.style.display = 'block';
           gameIframe.style.width = '100%';
           gameIframe.style.height = '600px';
-          // Games require internet — load from original CDN if available
-          gameIframe.src = 'https://cdn2.hoclieuthongminh.com/public/html-game/game.html';
+          // Try first known game URL (slap-the-board is common for Fun corner)
+          gameIframe.src = gameUrls[0];
+          if (hideBtn) hideBtn.style.display = 'block';
         }
       });
+      
+      if (hideBtn) {
+        hideBtn.style.cursor = 'pointer';
+        hideBtn.addEventListener('click', function() {
+          if (gameIframe) {
+            gameIframe.style.display = 'none';
+            gameIframe.src = '';
+          }
+          this.style.display = 'none';
+        });
+      }
     }
     
     // Clean up AngularJS style artifacts
